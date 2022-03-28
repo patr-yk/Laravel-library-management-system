@@ -4,8 +4,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <h2 class="admin-heading">Update Category</h2>
+                <h2 class="admin-heading">Upravit kategorii</h2>
             </div>
+						<div class="offset-md-7 col-md-2">
+								<a class="add-new" href="{{ route('categories') }}">Zpět</a>
+						</div>
         </div>
         <div class="row">
             <div class="offset-md-3 col-md-6">
@@ -13,7 +16,7 @@
                     autocomplete="off">
                     @csrf
                     <div class="form-group">
-                        <label>Category Name</label>
+                        <label>Název kategorie</label>
                         <input type="text" class="form-control @error('name') isinvalid @enderror" name="name"
                             value="{{ $category->name }}" required>
                         @error('name')
@@ -22,7 +25,7 @@
                             </div>
                         @enderror
                     </div>
-                    <input type="submit" name="submit" class="btn btn-danger" value="Update" required>
+                    <input type="submit" name="submit" class="btn btn-danger" value="uložit" required>
                 </form>
             </div>
         </div>

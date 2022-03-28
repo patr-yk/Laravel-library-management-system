@@ -10,17 +10,17 @@
                     </div>
                     <form class="yourform" action="{{ route('login') }}" method="post">
                         @csrf
-                        <h3 class="heading">Admin Login</h3>
+                        <h3 class="heading">Administrátorské přihlášení</h3>
                         <div class="form-group">
-                            <label>Username</label>
+                            <label>Jméno</label>
                             <input type="text" name="username" class="form-control" value="{{ old('username') }}"
                                 required>
                         </div>
                         <div class="form-group">
-                            <label>Password</label>
+                            <label>Heslo</label>
                             <input type="password" name="password" class="form-control" value="" required>
                         </div>
-                        <input type="submit" name="login" class="btn btn-danger" value="login" />
+                        <input type="submit" name="login" class="btn btn-danger" value="přihlásit" />
                     </form>
                     @error('username')
                         <div class='alert alert-danger'>{{ $message }}</div>

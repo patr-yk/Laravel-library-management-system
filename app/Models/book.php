@@ -10,7 +10,26 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class book extends Model
 {
     use HasFactory;
-    protected $guarded = [];
+    protected $fillable = [
+			'name',
+			'category_id',
+			'auther_id',
+			'publisher_id',
+			'status',
+			'created_at',
+			'updated_at',
+			'isbn',
+			'releaseDate',
+			'format',
+			'pageNumber',
+			'language',
+			'imgUrl',
+			'img2Url',
+			'resume',
+			'place',
+			'owner_id',
+			'comment'
+		];
 
     /**
      * Get the auther that owns the book
@@ -42,6 +61,14 @@ class book extends Model
         return $this->belongsTo(publisher::class);
     }
 
-
+		/**
+     * Get the publisher that owns the book
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(owner::class);
+    }
 
 }

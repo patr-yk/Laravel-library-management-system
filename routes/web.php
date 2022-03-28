@@ -5,11 +5,13 @@ use App\Http\Controllers\AutherController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BookIssueController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\fileUploadController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -24,10 +26,13 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', [BookController::class, 'guest_index'])->middleware('guest');
+Route::get('/view/{book}', [BookController::class, 'guest_view'])->middleware('guest')->name('view');
+
+Route::get('/login', function () {
     return view('welcome');
 })->middleware('guest');
-Route::post('/', [LoginController::class, 'login'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/Change-password', [LoginController::class, 'changePassword'])->name('change_password');
 
@@ -61,16 +66,29 @@ Route::middleware('auth')->group(function () {
     Route::post('/category/delete/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
     Route::post('/category/create', [CategoryController::class, 'store'])->name('category.store');
 
+		// Owner CRUD
+    Route::get('/owners', [OwnerController::class, 'index'])->name('owners');
+    Route::get('/owner/create', [OwnerController::class, 'create'])->name('owner.create');
+    Route::get('/owner/edit/{owner}', [OwnerController::class, 'edit'])->name('owner.edit');
+    Route::post('/owner/update/{id}', [OwnerController::class, 'update'])->name('owner.update');
+    Route::post('/owner/delete/{id}', [OwnerController::class, 'destroy'])->name('owner.destroy');
+    Route::post('/owner/create', [OwnerController::class, 'store'])->name('owner.store');
+
 
 
 
     // books CRUD
     Route::get('/books', [BookController::class, 'index'])->name('books');
     Route::get('/book/create', [BookController::class, 'create'])->name('book.create');
+		Route::get('book/view/{book}', [BookController::class, 'view'])->name('book.view');
     Route::get('/book/edit/{book}', [BookController::class, 'edit'])->name('book.edit');
     Route::post('/book/update/{id}', [BookController::class, 'update'])->name('book.update');
     Route::post('/book/delete/{id}', [BookController::class, 'destroy'])->name('book.destroy');
     Route::post('/book/create', [BookController::class, 'store'])->name('book.store');
+
+		//uploading CSV with books
+		Route::get('/upload', [fileUploadController::class, 'index'])->name('upload');
+		Route::post('/upload/store', [fileUploadController::class, 'store'])->name('upload.stoer');
 
     // students CRUD
     Route::get('/students', [StudentController::class, 'index'])->name('students');

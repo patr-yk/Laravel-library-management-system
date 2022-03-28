@@ -23,6 +23,7 @@
                             </thead>
                             <tbody>
                                 @forelse ($books as $book)
+																	@if ($book->return_day==NULL)
                                     <tr>
                                         <td>{{ $book->id }}</td>
                                         <td>{{ $book->student->name }}</td>
@@ -40,6 +41,7 @@
                                               echo '0 days';
                                             } @endphp</td>
                                     </tr>
+																	@endif
                                 @empty
                                     <tr>
                                         <td colspan="10">No Record Found!</td>
