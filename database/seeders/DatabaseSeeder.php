@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             BookSeeder::class,
             SettingsSeeder::class,
             StudentSeeder::class,
+						OwnerSeeder::class
         ]);
     }
 }

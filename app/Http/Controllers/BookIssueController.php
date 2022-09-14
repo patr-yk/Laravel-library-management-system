@@ -107,8 +107,15 @@ class BookIssueController extends Controller
      * @param  \App\Models\book_issue  $book_issue
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
+				$bookId = book_issue::where('id', $id)->value('book_id');
+				//dd($bookId);
+				if (book_issue::where('id', $id)->value('issue_status') == 'N') {
+					//dd(book_issue::where('id', $id)->value('issue_status'));
+					$book = book::find($bookId);
+					$book->status = 'Y';
+					$book->save();
+				}
         book_issue::find($id)->delete();
         return redirect()->route('book_issued');
     }

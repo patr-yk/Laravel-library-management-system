@@ -36,8 +36,8 @@ class fileUploadController extends Controller
 
 				$file = fopen($filepath, "r");
 				$data = [];
-
-				while (($filedata = fgetcsv($file, 1000, ",")) !== FALSE) {
+				fgetcsv($file, 10000, ",");//přeskočení prvního řádku
+				while (($filedata = fgetcsv($file, 10000, ",")) !== FALSE) {
 
 					print_r($filedata);
 					$book = new book;
@@ -47,7 +47,7 @@ class fileUploadController extends Controller
 					if ($count != 0) {
 						continue;
 					}
-
+					//vytvoření záznamů v relačních tabulkách, získání id
 					$category = new category;
 					$category_id = strToKey($filedata[18], $category);
 					$publisher = new publisher;
@@ -58,8 +58,6 @@ class fileUploadController extends Controller
 					$owner_id = strToKey($filedata[25], $owner);
 
 
-
-					//dd(category::where('name', $filedata[18])->latest()->value('name'));
 					//vložení do databáze
 					$book->name = $filedata[0];
 					$book->category_id = $category_id;

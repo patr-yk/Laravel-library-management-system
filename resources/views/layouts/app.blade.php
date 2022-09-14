@@ -53,6 +53,7 @@
                         <li><a href="{{ route('books') }}">Knihy</a></li>
                         <li><a href="{{ route('students') }}">Uživatelé</a></li>
                         <li><a href="{{ route('book_issued') }}">Půjčené knihy</a></li>
+												<li><a href="{{ route('orders') }}">Objednávky</a></li>
                         <li><a href="{{ route('reports') }}">Zprávy</a></li>
                         <li><a href="{{ route('settings') }}">Nastavení</a></li>
 												<li><a href="{{ route('upload') }}">Import</a></li>

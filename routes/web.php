@@ -12,6 +12,7 @@ use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\fileUploadController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -26,12 +27,23 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 |
 */
 
-Route::get('/', [BookController::class, 'guest_index'])->middleware('guest');
-Route::get('/view/{book}', [BookController::class, 'guest_view'])->middleware('guest')->name('view');
+Route::get('/', [BookController::class, 'guest_index'])->middleware('guest')->name('index');
 
-Route::get('/login', function () {
-    return view('welcome');
-})->middleware('guest');
+Route::middleware('guest')->group(function () {
+	Route::get('/login', function () { return view('welcome'); });
+	Route::get('/view/{book}', [BookController::class, 'guest_view'])->name('view');
+});
+
+//book orders
+//order routes for customers
+Route::get('/order/create/{book}', [OrderController::class, 'create'])->name('order.create')->middleware('guest');
+Route::post('/order/create', [OrderController::class, 'store'])->name('order.store')->middleware('guest');
+//routes for orders administration
+Route::get('/book-issue/orders', [OrderController::class, 'index'])->name('orders');
+Route::post('/book-issue/accept-order/{id}', [OrderController::class, 'accept'])->name('order.accept')->middleware('auth');
+Route::post('/book-issue/delete-order/{id}', [OrderController::class, 'destroy'])->name('order.destroy')->middleware('auth');
+
+
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/Change-password', [LoginController::class, 'changePassword'])->name('change_password');
@@ -74,21 +86,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/owner/delete/{id}', [OwnerController::class, 'destroy'])->name('owner.destroy');
     Route::post('/owner/create', [OwnerController::class, 'store'])->name('owner.store');
 
-
-
-
     // books CRUD
     Route::get('/books', [BookController::class, 'index'])->name('books');
     Route::get('/book/create', [BookController::class, 'create'])->name('book.create');
-		Route::get('book/view/{book}', [BookController::class, 'view'])->name('book.view');
+		Route::get('/book/view/{book}', [BookController::class, 'view'])->name('book.view');
     Route::get('/book/edit/{book}', [BookController::class, 'edit'])->name('book.edit');
     Route::post('/book/update/{id}', [BookController::class, 'update'])->name('book.update');
     Route::post('/book/delete/{id}', [BookController::class, 'destroy'])->name('book.destroy');
     Route::post('/book/create', [BookController::class, 'store'])->name('book.store');
-
-		//uploading CSV with books
-		Route::get('/upload', [fileUploadController::class, 'index'])->name('upload');
-		Route::post('/upload/store', [fileUploadController::class, 'store'])->name('upload.stoer');
 
     // students CRUD
     Route::get('/students', [StudentController::class, 'index'])->name('students');
@@ -99,8 +104,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/student/create', [StudentController::class, 'store'])->name('student.store');
     Route::get('/student/show/{id}', [StudentController::class, 'show'])->name('student.show');
 
-
-
+		//book issues CRUD
     Route::get('/book_issue', [BookIssueController::class, 'index'])->name('book_issued');
     Route::get('/book-issue/create', [BookIssueController::class, 'create'])->name('book_issue.create');
     Route::get('/book-issue/edit/{id}', [BookIssueController::class, 'edit'])->name('book_issue.edit');
@@ -108,6 +112,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/book-issue/delete/{id}', [BookIssueController::class, 'destroy'])->name('book_issue.destroy');
     Route::post('/book-issue/create', [BookIssueController::class, 'store'])->name('book_issue.store');
 
+		//showing reports about book issues
     Route::get('/reports', [ReportsController::class, 'index'])->name('reports');
     Route::get('/reports/Date-Wise', [ReportsController::class, 'date_wise'])->name('reports.date_wise');
     Route::post('/reports/Date-Wise', [ReportsController::class, 'generate_date_wise_report'])->name('reports.date_wise_generate');
@@ -115,6 +120,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/reports/monthly-Wise', [ReportsController::class, 'generate_month_wise_report'])->name('reports.month_wise_generate');
     Route::get('/reports/not-returned', [ReportsController::class, 'not_returned'])->name('reports.not_returned');
 
+		//uploading CSV with books
+		Route::get('/upload', [fileUploadController::class, 'index'])->name('upload');
+		Route::post('/upload/store', [fileUploadController::class, 'store'])->name('upload.stoer');
+
+		//settings
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
     Route::post('/settings', [SettingsController::class, 'update'])->name('settings');
 });

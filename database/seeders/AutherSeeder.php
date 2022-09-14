@@ -1,8 +1,8 @@
 <?php
 
 namespace Database\Seeders;
-
 use App\Models\auther;
+use Database\Factories\AutherFactory;
 use Illuminate\Database\Seeder;
 
 class AutherSeeder extends Seeder

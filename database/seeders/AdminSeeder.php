@@ -14,7 +14,7 @@ class AdminSeeder extends Seeder
     public function run()
     {
         if (\App\Models\User::count() == 0) {
-            \App\Models\User::factory(1)->create();
+            \App\Models\User::factory(10)->create();
         }
     }
 }

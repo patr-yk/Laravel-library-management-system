@@ -74,14 +74,14 @@ class BookController extends Controller
      * @param  \App\Models\book  $book
      * @return \Illuminate\Http\Response
      */
-    public function view(book $book)
+    public function view($book)
     {
         return view('book.view',[
             'authors' => auther::latest()->get(),
             'publishers' => publisher::latest()->get(),
             'categories' => category::latest()->get(),
 						'owners' => owner::latest()->get(),
-            'book' => $book
+            'book' => book::find($book)
         ]);
     }
 

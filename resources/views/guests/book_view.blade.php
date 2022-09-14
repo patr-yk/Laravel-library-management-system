@@ -8,6 +8,7 @@
 							</div>
 							<div class="offset-md-7 col-md-2">
 									<a class="add-new" href="/">Zpět</a>
+									<a class="add-new my-2" href="{{ route('order.create', $book->id) }}">Objednat</a>
 							</div>
 					</div>
 					<div class="row">

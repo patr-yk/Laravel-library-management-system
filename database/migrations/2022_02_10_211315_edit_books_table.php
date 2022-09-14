@@ -14,7 +14,7 @@ class EditBooksTable extends Migration
     public function up()
     {
         Schema::table('books', function (Blueprint $table) {
-					$table->string('isbn', 20);
+					$table->string('isbn', 20)->default('a');
 					$table->year('releaseDate')->nullable();
 					$table->string('format', 50)->nullable();
 					$table->integer('pageNumber')->nullable();
@@ -45,6 +45,7 @@ class EditBooksTable extends Migration
 				$table->dropColumn('img2Url');
 				$table->dropColumn('resume');
 				$table->dropColumn('place');
+				$table->dropForeign('books_owner_id_foreign');
 				$table->dropColumn('owner_id');
 				$table->dropColumn('comment');
 			});
